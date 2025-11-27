@@ -96,13 +96,12 @@ export default function HeroSection() {
               </Button>
               <Button 
                 size="lg" 
-                variant="outline" 
-                className="border-teal text-teal hover:bg-teal/10 backdrop-blur-sm hover:scale-105 transition-all duration-300"
+                className="bg-gradient-to-r from-teal to-emerald-500 text-white border-none shadow-lg shadow-teal/40 hover:shadow-teal/60 hover:shadow-xl hover:scale-105 transition-all duration-300 animate-pulse-subtle group"
                 data-testid="button-download-resume"
                 asChild
               >
                 <a href={RESUME_LINK} target="_blank" rel="noopener noreferrer">
-                  <Download className="mr-2 h-4 w-4" />
+                  <Download className="mr-2 h-4 w-4 group-hover:animate-bounce" />
                   Download Resume
                 </a>
               </Button>

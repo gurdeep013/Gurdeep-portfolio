@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import materIcon from "@assets/favicon-96x96_1764259277503.png";
+import ThemeToggle from "./ThemeToggle";
 
 const navLinks = [
   { label: "Home", href: "#hero" },
@@ -86,21 +87,24 @@ export default function Navigation() {
                 {link.label}
               </button>
             ))}
+            <ThemeToggle isScrolled={isScrolled} />
           </div>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            className="lg:hidden"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            data-testid="nav-mobile-toggle"
-          >
-            {isMobileMenuOpen ? (
-              <X className={isScrolled ? "text-foreground" : "text-white"} />
-            ) : (
-              <Menu className={isScrolled ? "text-foreground" : "text-white"} />
-            )}
-          </Button>
+          <div className="flex items-center gap-2 lg:hidden">
+            <ThemeToggle isScrolled={isScrolled} />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              data-testid="nav-mobile-toggle"
+            >
+              {isMobileMenuOpen ? (
+                <X className={isScrolled ? "text-foreground" : "text-white"} />
+              ) : (
+                <Menu className={isScrolled ? "text-foreground" : "text-white"} />
+              )}
+            </Button>
+          </div>
         </div>
       </div>
 

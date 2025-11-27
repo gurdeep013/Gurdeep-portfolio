@@ -1,4 +1,4 @@
-import { Github, Linkedin, Mail, Download, Heart } from "lucide-react";
+import { Github, Linkedin, Mail, Download } from "lucide-react";
 import materIcon from "@assets/favicon-96x96_1764259277503.png";
 
 const RESUME_LINK = "https://drive.google.com/file/d/1hUHN7DC2U2nQwH4ap8lZ7af6Uh5c1nWe/view?usp=sharing";
@@ -109,12 +109,9 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex justify-center">
             <p className="text-sm text-muted-foreground">
               Gurdeep Singh © {new Date().getFullYear()}. All rights reserved.
-            </p>
-            <p className="text-sm text-muted-foreground flex items-center gap-1">
-              Built with <Heart className="h-4 w-4 text-mcqueen fill-mcqueen animate-pulse" /> using React & Tailwind
             </p>
           </div>
         </div>

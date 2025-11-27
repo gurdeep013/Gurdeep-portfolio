@@ -16,7 +16,7 @@ interface Education {
 const education: Education[] = [
   {
     id: "btech",
-    degree: "Bachelor of Technology - Computer Science Engineering",
+    degree: "Bachelor of Engineering - Computer Science Engineering",
     institution: "Chandigarh University",
     location: "Punjab, India",
     period: "2021 – 2025",

@@ -127,7 +127,7 @@ export default function CertificationsSection() {
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    className="mt-4 border-teal text-teal hover:bg-teal/10 opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0"
+                    className="mt-4 border-teal text-teal hover:bg-teal/10 transition-all group-hover:scale-105"
                     asChild
                   >
                     <a href={cert.verifyLink} target="_blank" rel="noopener noreferrer">
