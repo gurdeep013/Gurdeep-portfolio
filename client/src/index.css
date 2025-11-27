@@ -43,9 +43,15 @@
   --chart-3: 200 65% 40%;
   --chart-4: 25 82% 45%;
   --chart-5: 280 55% 42%;
-  --font-sans: Open Sans, sans-serif;
+  --font-sans: 'Inter', sans-serif;
   --font-serif: Georgia, serif;
-  --font-mono: Menlo, monospace;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-heading: 'Bebas Neue', sans-serif;
+  
+  --rust: 25 69% 49%;
+  --teal: 180 35% 45%;
+  --mcqueen-red: 358 80% 50%;
+  --sky-blue: 197 71% 73%;
   --radius: .5rem;
   --shadow-2xs: 0px 2px 0px 0px hsl(0 0% 0% / 0.02);
   --shadow-xs: 0px 2px 0px 0px hsl(0 0% 0% / 0.03);
