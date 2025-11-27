@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { ExternalLink, Github, BarChart3, TrendingDown, Shield } from "lucide-react";
+import { Github, BarChart3, TrendingDown, Shield } from "lucide-react";
 import hotelBanner from "@assets/Hotel_banner_1764259277503.png";
 import rapidoBanner from "@assets/Rapido_Banner_1764259277502.png";
 import transactionBanner from "@assets/Tranaction_banner_1764259277501.jpg";
@@ -93,11 +93,27 @@ const projects: Project[] = [
 
 export default function ProjectsSection() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section id="projects" className="py-24 bg-muted/30" data-testid="section-projects">
+    <section ref={sectionRef} id="projects" className="py-24 bg-muted/30" data-testid="section-projects">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="text-center mb-16">
+        <div className={`text-center mb-16 ${isVisible ? "animate-slide-up" : "opacity-0"}`}>
           <p className="text-teal font-medium tracking-wide uppercase text-sm mb-2">My Work</p>
           <h2 className="font-heading text-5xl md:text-6xl text-foreground tracking-wide">
             FEATURED ANALYTICS PROJECTS
@@ -105,10 +121,11 @@ export default function ProjectsSection() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project) => (
+          {projects.map((project, index) => (
             <Card 
               key={project.id} 
-              className="overflow-hidden group hover-elevate cursor-pointer"
+              className={`overflow-hidden group hover-elevate cursor-pointer ${isVisible ? "animate-scale-in" : "opacity-0"}`}
+              style={{ animationDelay: `${0.2 + index * 0.15}s` }}
               onClick={() => setSelectedProject(project)}
               data-testid={`card-project-${project.id}`}
             >
@@ -116,25 +133,30 @@ export default function ProjectsSection() {
                 <img 
                   src={project.image} 
                   alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4">
                   <div className="flex flex-wrap gap-2">
                     {project.techStack.map((tech) => (
-                      <Badge key={tech} variant="secondary" className="bg-white/20 text-white border-0 text-xs">
+                      <Badge key={tech} variant="secondary" className="bg-white/20 text-white border-0 text-xs backdrop-blur-sm">
                         {tech}
                       </Badge>
                     ))}
+                  </div>
+                </div>
+                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="p-2 bg-rust rounded-full">
+                    <project.icon className="h-4 w-4 text-white" />
                   </div>
                 </div>
               </div>
               
               <div className="p-6 space-y-4">
                 <div className="flex items-start gap-3">
-                  <project.icon className="h-6 w-6 text-rust mt-1 shrink-0" />
+                  <project.icon className="h-6 w-6 text-rust mt-1 shrink-0 group-hover:rotate-12 transition-transform" />
                   <div>
-                    <h3 className="font-semibold text-lg leading-tight">{project.title}</h3>
+                    <h3 className="font-semibold text-lg leading-tight group-hover:text-rust transition-colors">{project.title}</h3>
                     <p className="text-sm text-muted-foreground">{project.subtitle}</p>
                   </div>
                 </div>
@@ -145,7 +167,7 @@ export default function ProjectsSection() {
                 
                 <div className="grid grid-cols-3 gap-2 pt-2">
                   {project.metrics.map((metric) => (
-                    <div key={metric.label} className="text-center">
+                    <div key={metric.label} className="text-center group-hover:scale-105 transition-transform">
                       <p className="font-heading text-xl text-rust">{metric.value}</p>
                       <p className="text-xs text-muted-foreground">{metric.label}</p>
                     </div>
@@ -168,11 +190,14 @@ export default function ProjectsSection() {
               </DialogHeader>
               
               <div className="space-y-6">
-                <img 
-                  src={selectedProject.image} 
-                  alt={selectedProject.title}
-                  className="w-full h-48 object-cover rounded-lg"
-                />
+                <div className="relative h-48 rounded-lg overflow-hidden">
+                  <img 
+                    src={selectedProject.image} 
+                    alt={selectedProject.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                </div>
                 
                 <div className="flex flex-wrap gap-2">
                   {selectedProject.techStack.map((tech) => (
@@ -205,18 +230,12 @@ export default function ProjectsSection() {
                   ))}
                 </div>
                 
-                <div className="flex gap-4">
-                  <Button asChild className="flex-1 bg-rust hover:bg-rust/90">
-                    <a href={selectedProject.github} target="_blank" rel="noopener noreferrer">
-                      <Github className="mr-2 h-4 w-4" />
-                      View on GitHub
-                    </a>
-                  </Button>
-                  <Button variant="outline" className="flex-1 border-teal text-teal hover:bg-teal/10">
-                    <ExternalLink className="mr-2 h-4 w-4" />
-                    Live Demo
-                  </Button>
-                </div>
+                <Button asChild className="w-full bg-rust hover:bg-rust/90 hover:scale-[1.02] transition-transform">
+                  <a href={selectedProject.github} target="_blank" rel="noopener noreferrer">
+                    <Github className="mr-2 h-4 w-4" />
+                    View on GitHub
+                  </a>
+                </Button>
               </div>
             </DialogContent>
           )}

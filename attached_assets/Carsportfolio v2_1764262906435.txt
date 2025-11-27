@@ -1,0 +1,5 @@
+﻿- I am providing you the song that is to played when someone open the site and restart when refresh the page keep an very small mute/unmute(add one time slight hover playing - Life is Highway by Rascal Flatts fade in 3 seconds) button on the right bottom of the page name of mp3 file is Rascal Flatts - Life Is A Highway (Lyrics).mp3
+-Add resume link - https://drive.google.com/file/d/1hUHN7DC2U2nQwH4ap8lZ7af6Uh5c1nWe/view?usp=sharing in all parts where required
+-Remove send a message section in bottom that add one click send message that re direct to mailto:gurdeepsinghere@gmail.com
+-Remove live demo button keep only view on github button in project section
+If anything could be done better in this whole design in term of color fonts animations (majorly animations) then do that, make sure this cars theme doesn't fade off

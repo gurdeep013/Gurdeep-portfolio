@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, Phone, Linkedin, Github, Send, Copy, Check, MapPin } from "lucide-react";
+import { Mail, Phone, Linkedin, Github, Send, Copy, Check, MapPin, FileText } from "lucide-react";
+
+const RESUME_LINK = "https://drive.google.com/file/d/1hUHN7DC2U2nQwH4ap8lZ7af6Uh5c1nWe/view?usp=sharing";
 
 interface ContactCard {
   id: string;
@@ -52,12 +51,6 @@ const contactCards: ContactCard[] = [
 export default function ContactSection() {
   const { toast } = useToast();
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleCopy = async (card: ContactCard) => {
     if (!card.copyable) return;
@@ -79,21 +72,6 @@ export default function ContactSection() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    toast({
-      title: "Message sent!",
-      description: "Thank you for reaching out. I'll get back to you soon!",
-    });
-    
-    setFormData({ name: "", email: "", message: "" });
-    setIsSubmitting(false);
-  };
-
   return (
     <section id="contact" className="py-24 bg-muted/30 relative overflow-hidden" data-testid="section-contact">
       <div className="absolute inset-0 opacity-5">
@@ -101,10 +79,11 @@ export default function ContactSection() {
           {[...Array(20)].map((_, i) => (
             <div
               key={i}
-              className="absolute w-2 h-2 rounded-full bg-rust"
+              className="absolute w-2 h-2 rounded-full bg-rust animate-pulse"
               style={{
                 top: `${Math.random() * 100}%`,
                 left: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 2}s`,
               }}
             />
           ))}
@@ -119,110 +98,74 @@ export default function ContactSection() {
           </h2>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
-          <Card className="p-8">
-            <h3 className="font-heading text-2xl mb-6">SEND A MESSAGE</h3>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  placeholder="Your name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                  className="focus:ring-teal focus:border-teal"
-                  data-testid="input-name"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="your.email@example.com"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  required
-                  className="focus:ring-teal focus:border-teal"
-                  data-testid="input-email"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="message">Message</Label>
-                <Textarea
-                  id="message"
-                  placeholder="Tell me about your project or just say hello..."
-                  rows={5}
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  required
-                  className="resize-none focus:ring-teal focus:border-teal"
-                  data-testid="input-message"
-                />
-              </div>
-              
-              <Button 
-                type="submit" 
-                className="w-full bg-rust hover:bg-rust/90"
-                disabled={isSubmitting}
-                data-testid="button-send-message"
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+            {contactCards.map((card, index) => (
+              <Card 
+                key={card.id} 
+                className="p-6 hover-elevate cursor-pointer group"
+                onClick={() => card.copyable ? handleCopy(card) : window.open(card.href, "_blank")}
+                data-testid={`contact-${card.id}`}
+                style={{ animationDelay: `${index * 0.1}s` }}
               >
-                {isSubmitting ? (
-                  "Sending..."
-                ) : (
-                  <>
-                    <Send className="mr-2 h-4 w-4" />
-                    Send Message
-                  </>
-                )}
-              </Button>
-            </form>
-          </Card>
-
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {contactCards.map((card) => (
-                <Card 
-                  key={card.id} 
-                  className="p-6 hover-elevate cursor-pointer group"
-                  onClick={() => card.copyable ? handleCopy(card) : window.open(card.href, "_blank")}
-                  data-testid={`contact-${card.id}`}
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-lg bg-teal/10 shrink-0">
-                      <card.icon className="h-5 w-5 text-teal" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-muted-foreground">{card.label}</p>
-                      <p className="font-medium truncate">{card.value}</p>
-                    </div>
-                    {card.copyable && (
-                      <div className="shrink-0">
-                        {copiedId === card.id ? (
-                          <Check className="h-4 w-4 text-green-500" />
-                        ) : (
-                          <Copy className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                        )}
-                      </div>
-                    )}
+                <div className="flex flex-col items-center text-center gap-3">
+                  <div className="p-4 rounded-full bg-teal/10 group-hover:bg-teal/20 transition-colors">
+                    <card.icon className="h-6 w-6 text-teal" />
                   </div>
-                </Card>
-              ))}
-            </div>
-
-            <Card className="p-6 bg-gradient-to-br from-rust/10 to-teal/10">
-              <div className="flex items-center gap-3 mb-4">
-                <MapPin className="h-5 w-5 text-rust" />
-                <h4 className="font-semibold">Based in India</h4>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Open to remote opportunities worldwide. Let's build something amazing together!
-              </p>
-            </Card>
+                  <div>
+                    <p className="text-sm text-muted-foreground">{card.label}</p>
+                    <p className="font-medium text-sm truncate max-w-[150px]">{card.value}</p>
+                  </div>
+                  {card.copyable && (
+                    <div className="h-4">
+                      {copiedId === card.id ? (
+                        <Check className="h-4 w-4 text-green-500" />
+                      ) : (
+                        <Copy className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                      )}
+                    </div>
+                  )}
+                </div>
+              </Card>
+            ))}
           </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Button 
+              size="lg"
+              className="bg-rust hover:bg-rust/90 text-white px-8 group"
+              asChild
+              data-testid="button-send-message"
+            >
+              <a href="mailto:gurdeepsinghere@gmail.com">
+                <Send className="mr-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                Send Me a Message
+              </a>
+            </Button>
+            
+            <Button 
+              size="lg"
+              variant="outline"
+              className="border-teal text-teal hover:bg-teal/10 px-8"
+              asChild
+              data-testid="button-view-resume"
+            >
+              <a href={RESUME_LINK} target="_blank" rel="noopener noreferrer">
+                <FileText className="mr-2 h-5 w-5" />
+                View Resume
+              </a>
+            </Button>
+          </div>
+
+          <Card className="p-6 bg-gradient-to-br from-rust/10 to-teal/10 mt-12 text-center">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <MapPin className="h-5 w-5 text-rust" />
+              <h4 className="font-semibold">Based in India</h4>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Open to remote opportunities worldwide. Let's build something amazing together!
+            </p>
+          </Card>
         </div>
       </div>
     </section>

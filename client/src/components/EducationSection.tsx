@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { GraduationCap, School, Award } from "lucide-react";
 
@@ -47,10 +48,27 @@ const education: Education[] = [
 ];
 
 export default function EducationSection() {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="education" className="py-24 bg-background" data-testid="section-education">
+    <section ref={sectionRef} id="education" className="py-24 bg-background" data-testid="section-education">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="text-center mb-16">
+        <div className={`text-center mb-16 ${isVisible ? "animate-slide-up" : "opacity-0"}`}>
           <p className="text-teal font-medium tracking-wide uppercase text-sm mb-2">Foundation</p>
           <h2 className="font-heading text-5xl md:text-6xl text-foreground tracking-wide">
             ACADEMIC FOUNDATION
@@ -63,23 +81,28 @@ export default function EducationSection() {
             
             <div className="space-y-6">
               {education.map((edu, index) => (
-                <div key={edu.id} className="relative" data-testid={`education-${edu.id}`}>
+                <div 
+                  key={edu.id} 
+                  className={`relative ${isVisible ? "animate-slide-in-right" : "opacity-0"}`}
+                  style={{ animationDelay: `${0.2 + index * 0.15}s` }}
+                  data-testid={`education-${edu.id}`}
+                >
                   <div className="hidden md:flex absolute left-8 -translate-x-1/2 w-4 h-4 rounded-full bg-teal border-4 border-background z-10 mt-6" />
                   
-                  <Card className="ml-0 md:ml-16 p-6">
+                  <Card className="ml-0 md:ml-16 p-6 hover-elevate group">
                     <div className="flex items-start gap-4">
-                      <div className={`p-3 rounded-lg ${index === 0 ? "bg-rust/10" : "bg-teal/10"} shrink-0`}>
-                        <edu.icon className={`h-6 w-6 ${index === 0 ? "text-rust" : "text-teal"}`} />
+                      <div className={`p-3 rounded-lg shrink-0 transition-colors ${index === 0 ? "bg-rust/10 group-hover:bg-rust/20" : "bg-teal/10 group-hover:bg-teal/20"}`}>
+                        <edu.icon className={`h-6 w-6 ${index === 0 ? "text-rust" : "text-teal"} group-hover:scale-110 transition-transform`} />
                       </div>
                       <div className="flex-1">
                         <div className="flex flex-wrap items-start justify-between gap-2">
                           <div>
-                            <h3 className="font-semibold text-lg">{edu.degree}</h3>
+                            <h3 className="font-semibold text-lg group-hover:text-rust transition-colors">{edu.degree}</h3>
                             <p className="text-rust font-medium">{edu.institution}</p>
                             <p className="text-sm text-muted-foreground">{edu.location} • {edu.period}</p>
                           </div>
                           {edu.score && (
-                            <div className="flex items-center gap-2 bg-teal/10 px-3 py-1 rounded-full">
+                            <div className="flex items-center gap-2 bg-teal/10 px-3 py-1 rounded-full group-hover:scale-105 transition-transform">
                               <Award className="h-4 w-4 text-teal" />
                               <span className="font-semibold text-teal">{edu.score}</span>
                             </div>
