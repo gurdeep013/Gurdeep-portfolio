@@ -1,0 +1,6 @@
+﻿-add some loader animation something like 3d mcqueen animation coming from left to right of page or any thing creative concept something like this
+- download button of resume is dull pop it
+- in academic foundation its bachelor of engineering not technology
+- remove build with love using react and tailwind on right most bottom
+- Also add dark mode make sure all text shows properly in both mode
+- view certificate would present there already
