@@ -33,7 +33,7 @@ const experiences: Experience[] = [
     "Collaborated with cross-functional teams to streamline workflows and implement data-driven process improvements, reducing manual effort by ~15%"
   ],
   skills: ["Data Analysis", "Dashboarding", "Data Validation", "Process Improvement"]
-  }
+  },
   {
     id: "metacrafters",
     title: "Data & Blockchain Operations Intern",
