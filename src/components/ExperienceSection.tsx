@@ -19,6 +19,22 @@ interface Experience {
 
 const experiences: Experience[] = [
   {
+  id: "eclerx",
+  title: "Analyst",
+  company: "eClerx",
+  location: "Chandigarh",
+  period: "Mar 2026 – Present",
+  type: "work",
+  icon: Briefcase,
+  highlights: [
+    "Analyzed customer operations data to identify trends and inconsistencies, delivering insights that reduced process errors and improved team efficiency",
+    "Designed and maintained stakeholder-facing dashboards tracking operational KPIs, enabling near-real-time performance monitoring across business units",
+    "Executed data validation and quality checks on large operational datasets, ensuring accuracy and integrity of reported metrics",
+    "Collaborated with cross-functional teams to streamline workflows and implement data-driven process improvements, reducing manual effort by ~15%"
+  ],
+  skills: ["Data Analysis", "Dashboarding", "Data Validation", "Process Improvement"]
+  }
+  {
     id: "metacrafters",
     title: "Data & Blockchain Operations Intern",
     company: "Metacrafters",
