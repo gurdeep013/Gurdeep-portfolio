@@ -4,7 +4,7 @@ import { Github, Linkedin, Mail, Download, ChevronDown } from "lucide-react";
 import headshotImage from "@assets/gurdeep_picture_headshot_1764259277503.png";
 import carsWallpaper from "@assets/mcqueen-cars-wallpaper-image_1764259334756.jpg";
 
-const RESUME_LINK = "https://drive.google.com/file/d/1hUHN7DC2U2nQwH4ap8lZ7af6Uh5c1nWe/view?usp=sharing";
+const RESUME_LINK = "https://drive.google.com/file/d/15MxRPtHbHjipExO74uu_dMgwZiDeWHUI/view";
 
 const socialLinks = [
   { icon: Github, href: "https://github.com/gurdeep013", label: "GitHub" },
